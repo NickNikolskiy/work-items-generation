@@ -1,7 +1,4 @@
-﻿using System;
-using System.Net.Http;
-using System.Net;
-using System.Threading.Tasks;
+﻿using System.Net;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
 using Microsoft.VisualStudio.Services.Common;
@@ -43,26 +40,23 @@ namespace ConsoleApp1
 
             for (int i = 0; i < quantity; i++)
             {
-                JsonPatchDocument patchDocument = new JsonPatchDocument();
-                patchDocument = getParentPatch();
+                JsonPatchDocument patchDocument = getParentPatch();
                 WorkItem result = workItemTrackingHttpClient.CreateWorkItemAsync(patchDocument, projectName, "User Story").Result;
                 string url = result.Url;
 
                 for (int j = 0; j < 1; j++)
                 {
-                    JsonPatchDocument childDocument = new JsonPatchDocument();
-                    childDocument = getChildPatch(url);
+                    JsonPatchDocument childDocument = getChildPatch(url);
                     WorkItem result1 = workItemTrackingHttpClient.CreateWorkItemAsync(childDocument, projectName, "Bug").Result;
                     string url1 = result1.Url;
                     for (int k = 0; k < 1; k++)
                     {
-                        JsonPatchDocument childDocument1 = new JsonPatchDocument();
-                        childDocument1 = getChildPatch(url1);
+                        JsonPatchDocument childDocument1 = getChildPatch(url1);
                         WorkItem result2 = workItemTrackingHttpClient.CreateWorkItemAsync(childDocument1, projectName, "Task").Result;
                     }
                 }
 
-                Console.WriteLine($"Parent created: {(i+1)} - {calculatePercent(quantity, i+1).ToString("P")}");
+                Console.WriteLine($"Parent {(i+1)} of {quantity} created - {calculatePercent(quantity, i+1).ToString("P")}");
             }
         }
 
